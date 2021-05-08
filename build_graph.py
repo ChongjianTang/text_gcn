@@ -54,6 +54,13 @@ def create_labels_file(dataset, label_list):
         f.write(label_list_str)
 
 
+def create_real_train_tag_file(dataset, real_train_doc_tags):
+    real_train_doc_names_str = '\n'.join(real_train_doc_tags)
+    # 写入真实训练集对应的信息
+    with open('./data/' + dataset + '.real_train.name', 'w') as f:
+        f.write(real_train_doc_names_str)
+
+
 if __name__ == '__main__':
     from utils.utils import loadWord2Vec, clean_str
 
@@ -261,12 +268,9 @@ if __name__ == '__main__':
     real_train_size = train_size - val_size  # - int(0.1 * train_size) 真实训练集大小
     # different training rates
 
-    real_train_doc_names = shuffle_doc_tag_list[:real_train_size]
-    real_train_doc_names_str = '\n'.join(real_train_doc_names)
+    real_train_doc_tags = shuffle_doc_tag_list[:real_train_size]
 
-    # 写入真实训练集对应的信息
-    with open('./data/' + dataset + '.real_train.name', 'w') as f:
-        f.write(real_train_doc_names_str)
+    create_real_train_tag_file(dataset, real_train_doc_tags)
 
     row_x = []
     col_x = []
@@ -418,19 +422,22 @@ if __name__ == '__main__':
 
     ally = np.array(ally)
 
-    # x (real_train_size,word_embeddings_dim)
-    # y (real_train_size,num_classes)
-    # tx (test_size,word_embeddings_dim)
-    # ty (test_size,num_classes)
+    # x (real_train_size, word_embeddings_dim)
+    # y (real_train_size, num_classes)
+    # tx (test_size, word_embeddings_dim)
+    # ty (test_size, num_classes)
     # allx (train_size + vocab_size, word_embeddings_dim)
     # ally (train_size + vocab_size, num_classes)
     print(x.shape, y.shape, tx.shape, ty.shape, allx.shape, ally.shape)
+
+
+
 
     '''
     Doc word heterogeneous graph 文档-词异构图
     '''
 
-    # word co-occurence with context windows
+    # word co-occurrence with context windows
     window_size = 20  # 滑动窗口大小
     windows = []
 
@@ -451,13 +458,12 @@ if __name__ == '__main__':
     for window in windows:  # 遍历各个窗口
         appeared = set()
         for i in range(len(window)):  # 遍历每个窗口中的词 统计词频
-            if window[i] in appeared:  # 在一个窗口中 多次出现的词统计一次
-                continue
-            if window[i] in word_window_freq:
-                word_window_freq[window[i]] += 1
-            else:
-                word_window_freq[window[i]] = 1
-            appeared.add(window[i])
+            if window[i] not in appeared:  # 在一个窗口中 多次出现的词统计一次
+                if window[i] in word_window_freq:
+                    word_window_freq[window[i]] += 1
+                else:
+                    word_window_freq[window[i]] = 1
+                appeared.add(window[i])
 
     word_pair_count = {}  # 统计所有窗口中 两个词的共现次数
 
@@ -466,6 +472,7 @@ if __name__ == '__main__':
             for j in range(0, i):
                 word_i = window[i]
                 word_i_id = word_id_map[word_i]
+                # print(vocab[word_i_id])
                 word_j = window[j]
                 word_j_id = word_id_map[word_j]
                 if word_i_id == word_j_id:

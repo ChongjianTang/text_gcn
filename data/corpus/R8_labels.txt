@@ -1,8 +1,8 @@
-crude
-grain
-interest
-trade
-acq
 earn
 ship
+interest
+crude
+trade
+grain
+acq
 money-fx
