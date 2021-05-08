@@ -15,7 +15,7 @@ f.close()
 train_size = len(lines)
 
 
-f = open(os.path.join(data_path, data_set + '_shuffle.txt'), 'r')
+f = open(os.path.join(data_path, data_set + '_shuffled.txt'), 'r')
 lines = f.readlines()
 f.close()
 

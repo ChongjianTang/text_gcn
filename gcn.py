@@ -49,7 +49,7 @@ class GCN(nn.Module):
         # support 归一化、引入自连接的邻接矩阵
         self.layer1 = GraphConvolution(input_dim, 200, support, act_func=nn.ReLU(), featureless=True,
                                        dropout_rate=dropout_rate)
-        self.layer2 = GraphConvolution(200, 200, support, act_func=nn.ReLU())
+        self.layer2 = GraphConvolution(200, num_classes, support, dropout_rate=dropout_rate)
         # self.layer3 = GraphConvolution(200, num_classes, support, dropout_rate=dropout_rate)
 
     def forward(self, x):  # x (train_size+vocab_size+test_size,train_size+vocab_size+test_size) 单位矩阵
@@ -57,6 +57,3 @@ class GCN(nn.Module):
         out = self.layer2(out)  # (train_size+vocab_size+test_size,num_classes)
         # out = self.layer3(out)
         return out
-
-
-
