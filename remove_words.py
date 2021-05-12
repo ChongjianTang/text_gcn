@@ -11,7 +11,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         sys.exit("Use: python remove_words.py <dataset>")
 
-    datasets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr']  # 全部5个数据集
+    datasets = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'toy']  # 全部6个数据集
     dataset = sys.argv[1]  # 获取待处理的数据集名称
 
     if dataset not in datasets:  # 数据集名称设置错误
@@ -62,7 +62,7 @@ if __name__ == '__main__':
         doc_words = []  # 保存数据集中的单词
         for word in words:
             # 如果是mr数据集 不去除停止词和低频词(<5) 文本很短
-            if dataset == 'mr':
+            if dataset == 'mr' or dataset == "toy":
                 doc_words.append(word)
             # 其他数据集 需要去除停止词和低频词(<5)
             elif word not in stop_words and word_freq[word] >= 5:

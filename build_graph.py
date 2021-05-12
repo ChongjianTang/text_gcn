@@ -66,7 +66,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:  # 执行脚本需要指定数据集 python后面需要有两个参数  一个是.py脚本 另一个是要处理的数据集名称
         sys.exit("Use: python build_graph.py <dataset>")
 
-    data_set_names = ['20ng', 'R8', 'R52', 'ohsumed', 'mr']  # 全部5个数据集
+    data_set_names = ['20ng', 'R8', 'R52', 'ohsumed', 'mr', 'toy']  # 全部5个数据集
     # build corpus
     data_sets = sys.argv[1]  # 获取待处理的数据集名称
 
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     # x: feature vectors of training docs, no initial features
     # select 90% training set
     train_set_size = len(train_doc_index_list)  # 训练集大小
-    val_set_size = int(0.1 * train_set_size)  # 验证集大小 10%
+    val_set_size = int(0.2 * train_set_size)  # 验证集大小 10%
     real_train_size_size = train_set_size - val_set_size  # - int(0.1 * train_size) 真实训练集大小
     # different training rates
 

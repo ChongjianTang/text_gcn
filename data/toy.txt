@@ -1,0 +1,10 @@
+0	train	earn
+1	train	acq
+2	train	earn
+3	train	earn
+4	train	earn
+5	test	earn
+6	test	earn
+7	test	earn
+8	test	earn
+9	test	earn
